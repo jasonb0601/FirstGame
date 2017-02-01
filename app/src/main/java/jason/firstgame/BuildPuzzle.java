@@ -10,6 +10,12 @@ public class BuildPuzzle
 	public int[][] puzzleGrid = new int[3][3];
 	public int[] puzzleValues = standardValues();
 
+	public String[][] tileID = new String[3][3];
+
+	public int[] zeroPosition = new int[2];
+
+	public int inversions = 0;
+
 	public BuildPuzzle()/*(String[] args)*/
 	{
 		//Create the solved grid
@@ -19,7 +25,13 @@ public class BuildPuzzle
 		//Create the puzzle grid
 
 		shuffleValues(puzzleValues);
+		while(isLegitPuzzle() == false){
+			shuffleValues(puzzleValues);
+		}
 		makeGrid(puzzleGrid,puzzleValues);
+		findZero();
+
+
 	
 		//Print both grids
 		/*printGrid(solutionGrid);
@@ -95,6 +107,86 @@ public class BuildPuzzle
 	      values[randomIndexBelow_i] = values[i];
 	      values[i] = temp;
 	    }
+	}
+	public void findZero()
+	{
+		for(int i = 0;i<=2;i++){
+			for(int j = 0;j<=2;j++){
+				if(puzzleGrid[i][j] == 0){
+					zeroPosition[0] = i;
+					zeroPosition[1] = j;
+					return;
+				}
+			}
+		}
+	}
+	public void handleMove(String move)
+	{
+		switch(move){
+			case "up":
+				if(zeroPosition[0] < 2){
+					puzzleGrid[zeroPosition[0]][zeroPosition[1]] = puzzleGrid[zeroPosition[0]+ 1][zeroPosition[1]];
+					puzzleGrid[zeroPosition[0]+ 1][zeroPosition[1]] = 0;
+					zeroPosition[0]++;
+				}
+				break;
+			case"down":
+				if(zeroPosition[0] > 0){
+					puzzleGrid[zeroPosition[0]][zeroPosition[1]] = puzzleGrid[zeroPosition[0]- 1][zeroPosition[1]];
+					puzzleGrid[zeroPosition[0]- 1][zeroPosition[1]] = 0;
+					zeroPosition[0]--;
+				}
+				break;
+			case"left":
+				if(zeroPosition[1] < 2){
+					puzzleGrid[zeroPosition[0]][zeroPosition[1]] = puzzleGrid[zeroPosition[0]][zeroPosition[1]+1];
+					puzzleGrid[zeroPosition[0]][zeroPosition[1]+1] = 0;
+					zeroPosition[1]++;
+				}
+				break;
+			case"right":
+				if(zeroPosition[1] > 0){
+					puzzleGrid[zeroPosition[0]][zeroPosition[1]] = puzzleGrid[zeroPosition[0]][zeroPosition[1]-1];
+					puzzleGrid[zeroPosition[0]][zeroPosition[1]-1] = 0;
+					zeroPosition[1]--;
+				}
+				break;
+		}
+
+
+	}
+	public boolean isLegitPuzzle()
+	{
+		boolean isLegit;
+		inversions = 0;
+		//Count inversions
+		for(int i = 0;i<8;i++){
+			for(int j = i+1;j<=8;j++){
+				if((puzzleValues[i] > puzzleValues[j])&& puzzleValues[j] != 0){
+					inversions++;
+				}
+			}
+		}
+		//If statements on whether number is odd or even
+		if(inversions % 2 == 1){
+			isLegit = false;
+		}else{
+			isLegit = true;
+		}
+		return isLegit;
+	}
+	public void setTileIDGrid()
+	{
+
+		for(int i = 0;i<=2;i++){
+			for(int j = 0;j<=2;j++){
+				if(puzzleGrid[i][j] == 0){
+					tileID[i][j] = "empty_tile";
+				}else {
+					tileID[i][j] = "tile" + (puzzleGrid[i][j]+1);
+				}
+			}
+		}
 	}
 	public String printSolutionGrid()
 	{

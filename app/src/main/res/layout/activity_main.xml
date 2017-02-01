@@ -10,6 +10,43 @@
     tools:context="jason.firstgame.MainActivity"
     android:background="#22df14">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/matrix_placeholder"
+            android:id="@+id/puzzleArray"
+            android:textColor="#f20c0c"
+            android:textStyle="bold"
+            android:layout_above="@+id/gridLayout"
+            android:layout_marginBottom="33dp"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1"
+            android:textSize="15pt" />
+
+        <Button
+            android:text="Generate New Horror"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/newPuzzleButton"
+            android:layout_below="@+id/puzzleArray"
+            android:layout_alignEnd="@+id/puzzleArray"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="64dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:text="Mantis Toboggan, M.D."
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:textColor="@android:color/background_dark" />
+    </LinearLayout>
+
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -106,18 +143,6 @@
             android:layout_column="2"
             android:src="@drawable/tile9" />
     </GridLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/matrix_placeholder"
-        android:id="@+id/puzzleArray"
-        android:layout_marginTop="57dp"
-        android:textColor="#f20c0c"
-        android:textStyle="bold"
-        android:textSize="22pt"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

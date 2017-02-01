@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">FirstGame</string>
     <string name="_8_puzzle">8 Puzzle</string>
-    <string name="matrix_placeholder">Puzzle Grid</string>
+    <string name="matrix_placeholder">Computer Virus</string>
 </resources>
