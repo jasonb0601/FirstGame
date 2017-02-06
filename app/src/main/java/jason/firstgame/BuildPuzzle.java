@@ -1,4 +1,7 @@
 package jason.firstgame;
+import android.util.Log;
+
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -14,6 +17,8 @@ public class BuildPuzzle
 
 	public int[] zeroPosition = new int[2];
 
+	public int moves = 0;
+
 	public int inversions = 0;
 
 	public BuildPuzzle()/*(String[] args)*/
@@ -21,6 +26,9 @@ public class BuildPuzzle
 		//Create the solved grid
 
 		makeGrid(solutionGrid,solutionValues);
+
+
+
 		
 		//Create the puzzle grid
 
@@ -80,15 +88,15 @@ public class BuildPuzzle
 		//Hard-codes standard values into 1D array
 		int[] gridValues = new int[9];
 		
-		gridValues[0] = 1;
-		gridValues[1] = 2;
-		gridValues[2] = 3;
-		gridValues[3] = 4;
-		gridValues[4] = 5;
-		gridValues[5] = 6;
-		gridValues[6] = 7;
-		gridValues[7] = 8;
-		gridValues[8] = 0;
+		gridValues[0] = 0;
+		gridValues[1] = 1;
+		gridValues[2] = 2;
+		gridValues[3] = 3;
+		gridValues[4] = 4;
+		gridValues[5] = 5;
+		gridValues[6] = 6;
+		gridValues[7] = 7;
+		gridValues[8] = 8;
 		
 		return gridValues;
 	}
@@ -122,12 +130,14 @@ public class BuildPuzzle
 	}
 	public void handleMove(String move)
 	{
+		//Makes changes to number grid based on swipe
 		switch(move){
 			case "up":
 				if(zeroPosition[0] < 2){
 					puzzleGrid[zeroPosition[0]][zeroPosition[1]] = puzzleGrid[zeroPosition[0]+ 1][zeroPosition[1]];
 					puzzleGrid[zeroPosition[0]+ 1][zeroPosition[1]] = 0;
 					zeroPosition[0]++;
+					moves++;
 				}
 				break;
 			case"down":
@@ -135,6 +145,7 @@ public class BuildPuzzle
 					puzzleGrid[zeroPosition[0]][zeroPosition[1]] = puzzleGrid[zeroPosition[0]- 1][zeroPosition[1]];
 					puzzleGrid[zeroPosition[0]- 1][zeroPosition[1]] = 0;
 					zeroPosition[0]--;
+					moves++;
 				}
 				break;
 			case"left":
@@ -142,6 +153,7 @@ public class BuildPuzzle
 					puzzleGrid[zeroPosition[0]][zeroPosition[1]] = puzzleGrid[zeroPosition[0]][zeroPosition[1]+1];
 					puzzleGrid[zeroPosition[0]][zeroPosition[1]+1] = 0;
 					zeroPosition[1]++;
+					moves++;
 				}
 				break;
 			case"right":
@@ -149,6 +161,7 @@ public class BuildPuzzle
 					puzzleGrid[zeroPosition[0]][zeroPosition[1]] = puzzleGrid[zeroPosition[0]][zeroPosition[1]-1];
 					puzzleGrid[zeroPosition[0]][zeroPosition[1]-1] = 0;
 					zeroPosition[1]--;
+					moves++;
 				}
 				break;
 		}

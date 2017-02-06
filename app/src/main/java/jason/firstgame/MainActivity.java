@@ -1,15 +1,21 @@
 package jason.firstgame;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Arrays;
 
 import static java.lang.Math.abs;
 
@@ -18,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     GestureDetector detector;
     BuildPuzzle puzzleTest;
     TextView showPuzzleArray;
+    TextView moveCounter;
     ImageView img0;
     ImageView img1;
     ImageView img2;
@@ -29,10 +36,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView img8;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         startGame();
 
@@ -52,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Displays puzzle after button press
     public void startGame() {
         showPuzzleArray = (TextView) findViewById(R.id.puzzleArray);
+        moveCounter = (TextView) findViewById(R.id.textView);
         Button button1 = (Button) findViewById(R.id.newPuzzleButton);
         button1.setOnClickListener(MainActivity.this);
 
@@ -62,6 +73,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+    /*ObjectAnimator scaleDown = ObjectAnimator.ofPropertyValuesHolder(ImageView,
+            PropertyValuesHolder.ofFloat("scaleX", 1.2f),
+            PropertyValuesHolder.ofFloat("scaleY", 1.2f));
+    scaleDown.setDuration(310);
+
+    scaleDown.setRepeatCount(ObjectAnimator.INFINITE);
+    scaleDown.setRepeatMode(ObjectAnimator.REVERSE);
+
+    scaleDown.start();*/
 
     public void setTiles(){
         img0 = (ImageView) findViewById(R.id.imageView);
@@ -93,6 +113,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 getIdentifier(puzzleTest.tileID[2][2], "drawable", this.getPackageName()));
     }
 
+    public void moveOutput(){
+
+        puzzleTest.setTileIDGrid();
+        setTiles();
+        if(Arrays.deepEquals(puzzleTest.puzzleGrid,puzzleTest.solutionGrid)){
+            showPuzzleArray.setText("You win");
+        }else{
+            showPuzzleArray.setText(puzzleTest.printPuzzleGrid());
+            moveCounter.setText(Integer.toString(puzzleTest.moves));
+        }
+    }
+
+
 
     @Override
     public void onClick(View v) {
@@ -104,9 +137,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setTiles();
 
                 showPuzzleArray.setText(puzzleTest.printPuzzleGrid());
+                moveCounter.setText(Integer.toString(puzzleTest.moves));
 
-                TextView locationOfZero = (TextView) findViewById(R.id.textView);
-                locationOfZero.setText(Integer.toString(puzzleTest.zeroPosition[0]) + Integer.toString(puzzleTest.zeroPosition[1]));
+
                 break;
         }
     }
@@ -144,31 +177,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         float slope = deltaX - deltaY ;
         if (slope > 0){
             if (e1.getX() < e2.getX()){
-                Toast.makeText(getApplicationContext(),"Right Swipe",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Right Swipe",Toast.LENGTH_SHORT).show();
                 puzzleTest.handleMove("right");
-                showPuzzleArray.setText(puzzleTest.printPuzzleGrid());
-                puzzleTest.setTileIDGrid();
-                setTiles();
+                moveOutput();
             }else if(e1.getX() > e2.getX()){
-                Toast.makeText(getApplicationContext(),"Left Swipe",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Left Swipe",Toast.LENGTH_SHORT).show();
                 puzzleTest.handleMove("left");
-                showPuzzleArray.setText(puzzleTest.printPuzzleGrid());
-                puzzleTest.setTileIDGrid();
-                setTiles();
+                moveOutput();
             }
         }else if (slope < 0){
             if(e1.getY() < e2.getY()){
-                Toast.makeText(getApplicationContext(),"Down Swipe",Toast.LENGTH_SHORT).show();
+               //Toast.makeText(getApplicationContext(),"Down Swipe",Toast.LENGTH_SHORT).show();
                 puzzleTest.handleMove("down");
-                showPuzzleArray.setText(puzzleTest.printPuzzleGrid());
-                puzzleTest.setTileIDGrid();
-                setTiles();
+                moveOutput();
             }else if(e1.getY() > e2.getY()){
-                Toast.makeText(getApplicationContext(),"Up Swipe",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Up Swipe",Toast.LENGTH_SHORT).show();
                 puzzleTest.handleMove("up");
-                showPuzzleArray.setText(puzzleTest.printPuzzleGrid());
-                puzzleTest.setTileIDGrid();
-                setTiles();
+                moveOutput();
             }
         }
 
